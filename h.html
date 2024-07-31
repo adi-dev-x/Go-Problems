@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dynamically Create Input Fields for Offices</title>
+</head>
+<body>
+    <h2>Input Fields for Offices</h2>
+    <div id="inputContainer">
+        <!-- Input fields will be dynamically added here -->
+    </div>
+    <button type="button" onclick="fetchAndCreateInputFields()">Fetch and Create Input Fields</button>
+    <br><br>
+    <form id="officeForm" method="post">
+        <!-- Additional form elements can be added here -->
+        <button type="button" onclick="submitForm()">Submit Form</button>
+    </form>
+
+<script>
+    var k = [
+        {id: 1, name: "kollaadm"},
+        {id: 2, name: "kolladfsm"}
+    ];
+
+    // Function to fetch office data and create input fields
+    function fetchAndCreateInputFields() {
+        createInputFields(k);
+    }
+
+    // Function to dynamically create input fields for offices
+    function createInputFields(offices) {
+        var container = document.getElementById("inputContainer");
+
+        offices.forEach(function(office) {
+            // Create label for office name
+            var officeLabel = document.createElement("label");
+            officeLabel.textContent = office.name;
+            container.appendChild(officeLabel);
+
+            // Create input field for number of applicants with dynamic ID
+            var applicantsInput = document.createElement("input");
+            applicantsInput.type = "number";
+            applicantsInput.id = "applicants_" + office.id; // Dynamic ID based on office ID
+            applicantsInput.placeholder = "Number of Applicants";
+            container.appendChild(applicantsInput);
+
+            // Line break for better separation
+            container.appendChild(document.createElement("br"));
+        });
+    }
+
+    // Function to submit form with data
+    function submitForm() {
+        event.preventDefault();
+        var form = document.getElementById("officeForm");
+
+        // Create an object to hold office name and number of applicants
+        var data = {};
+        k.forEach(function(office) {
+            var inputId = "applicants_" + office.id;
+            var inputValue = document.getElementById(inputId).value;
+            data[office.name] = inputValue;
+        });
+
+        // Convert object to JSON
+        var jsonData = JSON.stringify(data);
+
+        // Alert the JSON data
+        alert(jsonData);
+
+        // Submit the form
+        // form.submit();
+    }
+</script>
+</body>
+</html>
